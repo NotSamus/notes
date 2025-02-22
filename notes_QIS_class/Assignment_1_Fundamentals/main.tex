@@ -5,6 +5,9 @@
 \usepackage{quantikz} % Ensure this is present
 \usepackage{tikz}
 \usetikzlibrary{quantikz2}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usetikzlibrary{arrows.meta}
 \begin{document}
 
 \begin{Large}
@@ -21,7 +24,7 @@
 
 \vspace{2ex}
 
-
+This book was used as a reference to solve these problems \cite{Wong2022}
 
 \begin{problem}{Solve}{problem-label}
 Determine if each pair of states is orthogonal or not.
@@ -398,15 +401,55 @@ Finally we apply the control gate and we got :
 \]
 \end{problem}
 
-
+\newpage%removeeeeeee
 \begin{problem}{GHZ}{problem-label-6}
 	
 	\begin{enumerate}[(a)]
 		\item Construct a three-qubit GHZ state and show that measuring any qubit collapses the entire system.
 	\end{enumerate}
 	\textbf{Answer:}\\
+	a three-qubit GHZ state is in the following form:
+	\[
+	\ket{GHZ} = \frac{1}{\sqrt{2}}(\ket{000}+\ket{111})
+	\]
+	So we start with three qubits in the state $\ket{0}$:
+	\[
+	\ket{\psi_0} = \ket{000}
+	\]
+	This can be represented as 
+	\[
+	\ket{0}\otimes\ket{0}\otimes\ket{0}
+	\]
+	From here we are going to apply Hadamar to the first qubit:
+	\[
+	\ket{\psi_o} = \textit{H}\ket{0} \otimes \ket{0}\otimes\ket{0}
+	\]
+	\[
+	\ket{\psi_o} = \frac{1}{\sqrt{2}}(\ket{0} + \ket{1}) \otimes \ket{0}\otimes\ket{0}
+	\]
+	Then 
+	\[
+	= \frac{1}{\sqrt{2}} (\ket{000}+ \ket{100})
+	\]
+	from here we are going to apply control gates, the first one is going to be the contriol and the second one is going to be the target:
+	\[
+	Cnot_{1->2}\ket{\psi_0} = \frac{1}{\sqrt{2}} (\ket{000}+ \ket{110})
+	\]
+	then we are going to apply cnot again and the control is 1 and the target is 3:
+	\[
+		Cnot_{1->3}\ket{\psi_0} = \frac{1}{\sqrt{2}} (\ket{000}+ \ket{111}) = \ket{GHZ}
+	\]
 	
+	Now, if we expand it to:
+	\[
+	\ket{GHZ} = \frac{1}{\sqrt{2}} (\ket{0}\otimes\ket{00}+\ket{1}\otimes\ket{11})
+	\]
+	The first qubit is in superposition  $\ket{0}$ and $\ket{1}$, and we know that the probabilities of measuring $\ket{0}$ is $\frac{1}{2}$ and the same applies to $\ket{1}$.
 	
+	If we measure the first qubit and get a 0, the state collapses to $ \ket{0}\otimes\ket{00}$ or $\ket{000}$. This merans that all three qubits are now in the state $\ket{000}$
+	
+	\textbf{Why does it happen?} Well, the quibits are entangles, measuring one of them instantly determins the state of all the others.
+
 \end{problem}
 
 \begin{problem}{CNOT}{problem-label-7}
@@ -527,13 +570,97 @@ For the next problem I changed $\ket{\Psi^+} to \ket{\Psi^-} $, just to experime
 			From this we can \textbf{conclude} that it is entangled because the states are not separated and cannot be represented as a tensor product due the contradiction stated before.
 \end{problem}
 
-
+For the following problem it was not required to answer but I wanted to introduce the algorithm by paper and also by code.
 \begin{problem}{Quantum Circuit}{problem-label-10}
 	
 	\begin{enumerate}[(a)]
 		\item Implement a Quantum Circuit for the Deutsh-Josza algorithm and verify its operation.
 	\end{enumerate}
 	\textbf{Answer:}
+	Well, Lets say we are given a algorithm \textit{f(x)} that takes one bit \textit{x} as an input and returns one bit f(x)
+	
+	
+\[
+\begin{tikzpicture}[node distance=2cm, auto]
+ %Nodes
+	\node (input) {$x$};
+	\node[draw, rectangle, minimum width=2cm, minimum height=1cm, right of=input] (blackbox) {};
+	\node[right of=blackbox] (output) {$f(x)$};
+	% Arrows
+	\draw[-> ] (input) -- (blackbox);
+	\draw[-> ] (blackbox) -- (output);
+\end{tikzpicture}
+\]
+We need to check whether the result actually depends on the input or not. As mentions \cite{Kosheleva2021} mentions, one example for this algorithm is the weather prediction in El Paso, To predict tomorrows weather we can use today's weather data from all over the world. However, in reality only weather in the small vicinty of El Paso is relevant. These kind of problems are important because as mentioned, weather prediction is a good example of a program f that requires a lot of computations, but it is important to solve the probelm with few calls to the program f as possible.\\
+
+
+\textbf{Deutsch-Jozsa Algorithm}
+\begin{itemize}[]
+	\item First, We start with the state $\ket{0,1}$ = $\ket{0}\otimes\ket{1}$
+	\item We apply the Hadamard Transformation \textit{H} to Both Bits
+	\item Then, we apply \textit{f}
+	\item After that, we again apply the Hadamard transformation to both bits:
+	\begin{itemize}[]
+		\item If the first bit is 0, we conclude that the function \textit{f} is constant.
+		\item If the first bit is 1, we conclude that hte function is not constant.
+		\end{itemize}
+\end{itemize}
+\textbf{Example:}\\
+
+We start with $\ket{0,1}$, then we expand it and apply Hadamard transformations.
+
+\[
+H\ket{0} \otimes H\ket{1} = (\frac{1}{\sqrt{2}}\ket{0} + \frac{1}{\sqrt{2}}\ket{1}) \otimes (\frac{1}{\sqrt{2}}\ket{0}-\frac{1}{\sqrt{2}}\ket{1})
+\]
+We distribute and we get:
+\[
+H\ket{0} \otimes H\ket{1} = \frac{1}{\sqrt{2}}\ket{00}- \frac{1}{\sqrt{2}}\ket{01} + \frac{1}{\sqrt{2}}\ket{10}-\frac{1}{\sqrt{2}}\ket{11}
+\]
+What happens next, depends on the function \textit{f}. The left numbers of the table is corresponding for f(1) and the numbers on the top is corresponding for f(0).
+\[
+\begin{array}{c|c|c}
+	 & 0 & 1 \\ \hline
+	0 & F(x) = 0 & F(x) = !x \\
+	1 & F(x) = x & F(x) = 1
+\end{array}
+\]
+\[
+\textit{f}(x,y) -> \ket{x,y\otimes \textit{f}(x)}
+\]
+for \textit{f}(x) = 1
+\[
+\ket{x,y} -> \ket{x,y\otimes1} 
+\]
+\[
+\ket{0,0} -> \ket{0,0\otimes1} = \ket{0,1}
+\]
+\[
+\ket{0,1} -> \ket{0,1\otimes1} = \ket{0,0}
+\]
+\[
+\ket{1,0} -> \ket{1,0\otimes1} = \ket{1,1}
+\]
+\[
+\ket{1,1} -> \ket{1,1\otimes1} = \ket{1,0}
+\]
+
+\[
+\frac{1}{2} \ket{01} -\frac{1}{2}\ket{00}+\frac{1}{2}\ket{11}-\frac{1}{2}\ket{10}=
+\]
+\[
+=\frac{1}{2} \ket{0}\otimes\ket{1} -\frac{1}{2}\ket{0}\otimes\ket{0}+
+\frac{1}{2}\ket{1}\otimes\ket{1}-\frac{1}{2}\ket{1}\otimes\ket{0}=
+\]
+\[
+=\frac{1}{\sqrt{2}}\ket{0}\otimes(\ket{1}-\ket{0})+\frac{1}{\sqrt{2}}\ket{1}\otimes(\ket{1}-\ket{0})=
+\]
+\[
+=(\frac{1}{\sqrt{2}}\ket{0} + \frac{1}{\sqrt{2}}\ket{1}) \otimes (\frac{1}{\sqrt{2}}\ket{0}-\frac{1}{\sqrt{2}}\ket{1})=
+\]
+\[
+-\ket{0} \otimes \ket{1}
+\]
+
 \end{problem}
 
 
@@ -541,11 +668,9 @@ For the next problem I changed $\ket{\Psi^+} to \ket{\Psi^-} $, just to experime
 
 % =================================================
 
-% \newpage
-
-% \vfill
-
-%\bibliographystyle{apalike}
-%\bibliography{references}
+\newpage
+\vfill
+\bibliographystyle{apalike}
+\bibliography{references}
 
 \end{document}

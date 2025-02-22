@@ -1,8 +1,14 @@
 \begin{thebibliography}{}
 
-\bibitem[Sakurai and Napolitano, 2020]{Sakurai2020}
-Sakurai, J.~J. and Napolitano, J. (2020).
-\newblock {\em Modern Quantum Mechanics}.
-\newblock Cambridge University Press.
+\bibitem[Kosheleva and Kreinovich, 2021]{Kosheleva2021}
+Kosheleva, O. and Kreinovich, V. (2021).
+\newblock How to introduce technical details of quantum computing in a theory
+  of computation class: Using the basic case of the deutsch-jozsa algorithm.
+\newblock {\em University of Texas at El Paso}.
+
+\bibitem[Wong, 2022]{Wong2022}
+Wong, T.~G. (2022).
+\newblock {\em Introduction to Classical and Quantum Computing}.
+\newblock Rooted Grove, USA.
 
 \end{thebibliography}
